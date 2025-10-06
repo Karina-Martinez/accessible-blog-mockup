@@ -1,38 +1,65 @@
-.App {
-  text-align: center;
+/* src/App.css */
+
+/* --- Estilos Generales y Contraste (Criterio 1.4.3) --- */
+.app-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #f7f7f7; /* Gris claro de fondo */
+  color: #1a1a1a; /* Texto oscuro para alto contraste */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.site-header {
+  border-bottom: 2px solid #0056b3; /* Azul fuerte para contraste */
+  padding-bottom: 10px;
+  margin-bottom: 30px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* --- Diseño de la Tarjeta --- */
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.post-card {
+  border: 1px solid #ccc;
+  padding: 15px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.App-link {
-  color: #61dafb;
+.post-title {
+  color: #0056b3; /* Azul oscuro para títulos */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.post-image-mockup {
+    height: 100px;
+    background-color: #e0e0e0; /* Gris claro, contraste con fondo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    border: 1px dashed #666;
+}
+
+/* --- Foco Visual del Teclado (Criterio 2.4.7) --- */
+/* Esencial para la accesibilidad por teclado */
+.read-more-link:focus,
+button:focus,
+a:focus {
+    outline: 4px solid #ffaa00; /* Anillo amarillo brillante y grueso */
+    outline-offset: 2px;
+}
+
+.read-more-link {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    margin-top: 10px;
 }
