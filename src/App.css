@@ -97,6 +97,13 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     height: fit-content;
+    
+    /* --- CORRECCIÓN PARA CENTRADO DEL BOTÓN --- */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra los elementos horizontalmente */
+    text-align: center; /* Centra el texto */
+    /* ------------------------------------------- */
 }
 
 .callout-title {
@@ -106,8 +113,11 @@ body {
 }
 
 .donation-button {
-    display: block;
-    width: 100%;
+    /* Eliminamos width: 100% para que el botón no ocupe todo el ancho del aside */
+    /* y así el flexbox pueda centrarlo */
+    display: block; 
+    width: auto; /* Ajuste para que se centre correctamente */
+    min-width: 80%; /* Le damos un ancho mínimo para que sea visible */
     text-align: center;
     padding: 12px;
     background-color: #007bff;
