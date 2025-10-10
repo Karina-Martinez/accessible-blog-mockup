@@ -1,7 +1,7 @@
 export const mockApiResponse = {
     status: "success",
     count: 3,
-    // Datos simulados para las noticias (como si vinieran de Laravel)
+    // Datos simulados para las noticias
     news: [
         {
             id: 1,
@@ -34,4 +34,44 @@ export const mockApiResponse = {
         { id: 2, name: "Capacitación Tecnológica", description: "Talleres sobre el uso de tecnologías asistivas y dispositivos móviles." },
         { id: 3, name: "Traducción de Contenido", description: "Servicios de transcripción y subtitulado para material audiovisual." },
     ]
+};
+
+/**
+ * Simulación de la respuesta de una API de Laravel a un envío de formulario.
+ * @param {object} formData - Datos del formulario.
+ * @returns {Promise<object>} Objeto simulando la respuesta de la API (200 OK o 422 Validation Error).
+ */
+export const mockApiFormSubmit = (formData) => {
+    return new Promise(resolve => {
+        // Simula la latencia de la red
+        setTimeout(() => {
+            const errors = {};
+
+            // Simulación de las reglas de validación del Backend de Laravel
+            if (!formData.name || formData.name.length < 3) {
+                errors.name = "El nombre es obligatorio y debe tener al menos 3 caracteres.";
+            }
+            if (!formData.email || !formData.email.includes('@')) {
+                errors.email = "Debe proporcionar un correo electrónico válido.";
+            }
+            if (!formData.message || formData.message.length < 10) {
+                errors.message = "El mensaje es obligatorio y debe tener al menos 10 caracteres.";
+            }
+
+            if (Object.keys(errors).length > 0) {
+                // Respuesta simulada de error de validación (código HTTP 422)
+                resolve({ 
+                    status: 'error', 
+                    message: 'Hubo errores de validación. Por favor, revise los campos.',
+                    errors: errors 
+                });
+            } else {
+                // Respuesta simulada de éxito (código HTTP 200)
+                resolve({ 
+                    status: 'success', 
+                    message: '¡Gracias! Su mensaje ha sido enviado con éxito.' 
+                });
+            }
+        }, 1500); 
+    });
 };

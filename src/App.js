@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css'; 
-import { mockApiResponse } from './data'; 
+import { mockApiResponse, mockApiFormSubmit } from './data'; // Importa la función de simulación de API
 
 // --- Componente 1: Tarjeta de Noticia Accesible ---
 const AccessiblePostCard = ({ post }) => {
@@ -70,6 +70,120 @@ const DonationCallout = () => {
     );
 };
 
+// --- Componente 4: Formulario de Contacto Accesible (Avance Sprint 2) ---
+const AccessibleContactForm = () => {
+    const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+    const [apiResponse, setApiResponse] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState({});
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+        // Limpia el error localmente al escribir
+        if (errors[e.target.name]) {
+            setErrors(prev => ({ ...prev, [e.target.name]: undefined }));
+        }
+        setApiResponse(null); // Borra el mensaje de éxito/error general
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setApiResponse(null);
+        setErrors({});
+
+        // Simulación de la llamada POST a la API de Laravel
+        const response = await mockApiFormSubmit(formData);
+
+        if (response.status === 'success') {
+            setApiResponse({ type: 'success', message: response.message });
+            setFormData({ name: '', email: '', message: '' }); // Limpia el formulario
+        } else {
+            // Manejo de errores de validación del Backend
+            setApiResponse({ type: 'error', message: response.message });
+            setErrors(response.errors);
+        }
+
+        setLoading(false);
+    };
+
+    return (
+        <section className="contact-section" aria-labelledby="contact-heading">
+            <h2 id="contact-heading" className="section-heading">Contáctanos - Formulario Accesible</h2>
+            
+            {loading && <p className="loading-message" aria-live="assertive">Enviando mensaje...</p>}
+            
+            {/* Mensaje de éxito/error general (anunciado por aria-live) */}
+            {apiResponse && (
+                <div 
+                    className={`api-message api-message-${apiResponse.type}`} 
+                    role={apiResponse.type === 'error' ? 'alert' : 'status'}
+                    aria-live="polite"
+                >
+                    {apiResponse.message}
+                </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="accessible-form" noValidate>
+                
+                {/* Campo Nombre */}
+                <div className="form-group">
+                    <label htmlFor="name">Nombre Completo <span className="required-star">*</span></label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        // ARIA: describe el campo con el mensaje de error si existe
+                        aria-invalid={!!errors.name}
+                        aria-describedby={errors.name ? 'error-name' : undefined}
+                    />
+                    {/* Mensaje de error (Referenciado por aria-describedby) */}
+                    {errors.name && <p id="error-name" className="input-error" role="alert">{errors.name}</p>}
+                </div>
+
+                {/* Campo Email */}
+                <div className="form-group">
+                    <label htmlFor="email">Correo Electrónico <span className="required-star">*</span></label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        aria-invalid={!!errors.email}
+                        aria-describedby={errors.email ? 'error-email' : 'hint-email'}
+                    />
+                    <small id="hint-email" className="input-hint">No compartiremos tu correo con nadie.</small>
+                    {errors.email && <p id="error-email" className="input-error" role="alert">{errors.email}</p>}
+                </div>
+
+                {/* Campo Mensaje */}
+                <div className="form-group">
+                    <label htmlFor="message">Mensaje <span className="required-star">*</span></label>
+                    <textarea
+                        id="message"
+                        name="message"
+                        value={formData.message}
+                        onChange={handleChange}
+                        required
+                        rows="5"
+                        aria-invalid={!!errors.message}
+                        aria-describedby={errors.message ? 'error-message' : undefined}
+                    />
+                    {errors.message && <p id="error-message" className="input-error" role="alert">{errors.message}</p>}
+                </div>
+
+                <button type="submit" disabled={loading} className="submit-button">
+                    {loading ? 'Enviando...' : 'Enviar Mensaje'}
+                </button>
+            </form>
+        </section>
+    );
+};
 
 // --- Componente Principal (Punto de Entrada) ---
 function App() {
@@ -78,14 +192,13 @@ function App() {
     return (
         <div className="page-wrapper">
             <header className="site-header">
-                {/* <h1> como único encabezado principal del documento */}
                 <h1 className="header-title">Inclusión con Equidad A.C.</h1>
                 
-                {/* Uso de <nav> para la navegación principal (Rol de landmark) */}
                 <nav role="navigation" aria-label="Navegación principal del sitio">
                     <a href="#inicio" className="nav-link">Inicio</a>
                     <a href="#servicios" className="nav-link">Servicios</a>
                     <a href="#noticias" className="nav-link">Noticias</a>
+                    <a href="#contacto" className="nav-link">Contacto</a> {/* Nuevo enlace */}
                     <a href="#donar" className="nav-link">Donar</a>
                 </nav>
             </header>
@@ -104,7 +217,10 @@ function App() {
                 
             </main>
             
-            <ServicesSection services={services} /> {/* Sección de servicios en el footer o parte baja del main */}
+            {/* Nueva sección de contacto */}
+            <AccessibleContactForm />
+
+            <ServicesSection services={services} /> 
             
             <footer className="site-footer" role="contentinfo">
                 <p>&copy; 2025 Inclusión con Equidad A.C. | Todos los derechos reservados.</p>
