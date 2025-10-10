@@ -30,10 +30,21 @@ export const mockApiResponse = {
     ],
     // Datos estáticos para la sección de servicios
     services: [
-        { id: 1, name: "Asesoría Legal", description: "Orientación sobre derechos y obligaciones en temas de accesibilidad." },
-        { id: 2, name: "Capacitación Tecnológica", description: "Talleres sobre el uso de tecnologías asistivas y dispositivos móviles." },
-        { id: 3, name: "Traducción de Contenido", description: "Servicios de transcripción y subtitulado para material audiovisual." },
-    ]
+        { id: 1, name: "Asesoría Legal", description: "Orientación sobre derechos y obligaciones en temas de accesibilidad. Nuestro equipo legal revisa casos de discriminación digital." },
+        { id: 2, name: "Capacitación Tecnológica", description: "Talleres sobre el uso de tecnologías asistivas y dispositivos móviles. Incluimos cursos de NVDA y Jaws." },
+        { id: 3, name: "Traducción de Contenido", description: "Servicios de transcripción y subtitulado para material audiovisual, garantizando el cumplimiento de WCAG 2.1 para medios temporales." },
+    ],
+    legal_text: `
+        El Aviso Legal establece los términos y condiciones de uso de este sitio web. 
+        Al acceder y utilizar este servicio, el usuario acepta y se somete a las condiciones 
+        descritas. Inclusión con Equidad A.C. se compromete a mantener este sitio con 
+        los más altos estándares de accesibilidad, cumpliendo con la normativa vigente. 
+        El contenido aquí expuesto tiene fines informativos y no constituye asesoría legal directa. 
+        Para una atención personalizada, utilice el formulario de contacto. Cualquier 
+        reproducción total o parcial del contenido requiere la autorización expresa de la asociación.
+        (Blind Text Adicional: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non 
+        risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.)
+    `
 };
 
 /**

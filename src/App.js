@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './App.css'; 
-import { mockApiResponse, mockApiFormSubmit } from './data'; // Importa la función de simulación de API
+import { mockApiResponse, mockApiFormSubmit } from './data'; 
 
 // --- Componente 1: Tarjeta de Noticia Accesible ---
 const AccessiblePostCard = ({ post }) => {
@@ -30,35 +30,18 @@ const AccessiblePostCard = ({ post }) => {
     );
 };
 
-// --- Componente 2: Sección de Servicios Accesible ---
-const ServicesSection = ({ services }) => {
-    // Uso de <h2> para jerarquía de la sección
-    return (
-        <section className="services-section" aria-labelledby="services-heading">
-            <h2 id="services-heading" className="section-heading">Nuestros Servicios de Inclusión</h2>
-            <div className="services-grid">
-                {services.map(service => (
-                    <div key={service.id} className="service-item">
-                        <h3 className="service-title">{service.name}</h3> {/* Uso de <h3> anidado correctamente */}
-                        <p>{service.description}</p>
-                    </div>
-                ))}
-            </div>
-        </section>
-    );
-};
-
-// --- Componente 3: Llamada a la Acción de Donación (Aside) ---
-const DonationCallout = () => {
+// --- Componente 2: Llamada a la Acción de Donación (Aside) ---
+const DonationCallout = ({ navigate }) => {
     // Uso de <aside> para contenido tangencial y role="complementary"
     return (
         <aside role="complementary" className="donation-callout">
             <h3 className="callout-title">¡Únete a la Causa!</h3>
             <p>Tu apoyo nos ayuda a eliminar las barreras digitales. Si deseas colaborar, realiza una transferencia bancaria y registra tu donativo.</p>
             
-            {/* Enlace al formulario de registro (simulado) */}
+            {/* El enlace cambia la vista usando el router de estado */}
             <a 
-                href="#formulario-registro" 
+                href="#donar" 
+                onClick={(e) => { e.preventDefault(); navigate('donar'); }}
                 className="donation-button"
                 aria-label="Registra tu transferencia bancaria aquí para apoyar a la asociación."
             >
@@ -70,7 +53,7 @@ const DonationCallout = () => {
     );
 };
 
-// --- Componente 4: Formulario de Contacto Accesible (Avance Sprint 2) ---
+// --- Componente 3: Formulario de Contacto Accesible (Avance Sprint 2) ---
 const AccessibleContactForm = () => {
     const [formData, setFormData] = useState({ name: '', email: '', message: '' });
     const [apiResponse, setApiResponse] = useState(null);
@@ -79,11 +62,10 @@ const AccessibleContactForm = () => {
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
-        // Limpia el error localmente al escribir
         if (errors[e.target.name]) {
             setErrors(prev => ({ ...prev, [e.target.name]: undefined }));
         }
-        setApiResponse(null); // Borra el mensaje de éxito/error general
+        setApiResponse(null); 
     };
 
     const handleSubmit = async (e) => {
@@ -97,7 +79,7 @@ const AccessibleContactForm = () => {
 
         if (response.status === 'success') {
             setApiResponse({ type: 'success', message: response.message });
-            setFormData({ name: '', email: '', message: '' }); // Limpia el formulario
+            setFormData({ name: '', email: '', message: '' }); 
         } else {
             // Manejo de errores de validación del Backend
             setApiResponse({ type: 'error', message: response.message });
@@ -108,7 +90,7 @@ const AccessibleContactForm = () => {
     };
 
     return (
-        <section className="contact-section" aria-labelledby="contact-heading">
+        <section className="contact-section page-view" id="contacto" aria-labelledby="contact-heading">
             <h2 id="contact-heading" className="section-heading">Contáctanos - Formulario Accesible</h2>
             
             {loading && <p className="loading-message" aria-live="assertive">Enviando mensaje...</p>}
@@ -136,11 +118,9 @@ const AccessibleContactForm = () => {
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        // ARIA: describe el campo con el mensaje de error si existe
                         aria-invalid={!!errors.name}
                         aria-describedby={errors.name ? 'error-name' : undefined}
                     />
-                    {/* Mensaje de error (Referenciado por aria-describedby) */}
                     {errors.name && <p id="error-name" className="input-error" role="alert">{errors.name}</p>}
                 </div>
 
@@ -185,46 +165,162 @@ const AccessibleContactForm = () => {
     );
 };
 
-// --- Componente Principal (Punto de Entrada) ---
+// --- VISTAS DE PÁGINA COMPLETAS ---
+
+const HomePage = ({ navigate }) => {
+    const { news } = mockApiResponse;
+    return (
+        <main role="main" className="main-content-grid" tabIndex="-1">
+            <section className="posts-grid" id="noticias" aria-label="Lista de publicaciones recientes">
+                <h2 className="section-heading">Últimas Noticias</h2>
+                {news.map(post => (
+                    <AccessiblePostCard key={post.id} post={post} />
+                ))}
+            </section>
+            <DonationCallout navigate={navigate} /> 
+        </main>
+    );
+};
+
+const ServicesPage = () => {
+    const { services } = mockApiResponse;
+    return (
+        <main role="main" className="page-view services-page-container" tabIndex="-1">
+            <section className="contact-section" aria-labelledby="services-heading">
+                <h2 id="services-heading" className="section-heading">Nuestros Servicios de Inclusión y Apoyo</h2>
+                <p>Nuestro compromiso es eliminar las barreras. Aquí están los pilares de nuestro trabajo:</p>
+                <div className="services-grid">
+                    {services.map(service => (
+                        <div key={service.id} className="service-item service-item-expanded">
+                            <h3 className="service-title">{service.name}</h3>
+                            <p>{service.description}</p>
+                        </div>
+                    ))}
+                </div>
+            </section>
+        </main>
+    );
+};
+
+const DonationPage = ({ navigate }) => {
+    return (
+        <main role="main" className="page-view donation-page-container" tabIndex="-1">
+            <section className="contact-section" aria-labelledby="donation-heading">
+                <h2 id="donation-heading" className="section-heading">Colabora con Inclusión con Equidad A.C.</h2>
+                <div className="donation-instructions">
+                    <p>Gracias por tu interés en apoyar nuestra causa. Siguiendo nuestro compromiso con la transparencia y simplicidad, el proceso de donación se realiza mediante transferencia bancaria y posterior registro en nuestra plataforma.</p>
+                    
+                    <h3 className="sub-heading">Instrucciones Paso a Paso:</h3>
+                    <ol className="accessible-list">
+                        <li>**Realiza la Transferencia:** Utiliza los datos de la cuenta que se muestran a continuación para enviar tu donativo.</li>
+                        <li>**Guarda el Comprobante:** Asegúrate de tener el folio o comprobante de la transferencia.</li>
+                        <li>**Registra tu Donativo:** Haz clic en el botón de abajo para llenar nuestro formulario. Esto nos permite generar tu recibo y dar seguimiento a los fondos.</li>
+                    </ol>
+
+                    <h3 className="sub-heading">Datos Bancarios:</h3>
+                    <div className="bank-details" role="group" aria-label="Información de cuenta bancaria para donaciones">
+                        <p><strong>Banco:</strong> BANCOMEXT</p>
+                        <p><strong>Titular:</strong> Inclusión con Equidad A.C.</p>
+                        <p><strong>CLABE:</strong> 0000 1234 5678 9012 34</p>
+                        <p><strong>Referencia:</strong> DonativoWeb</p>
+                    </div>
+
+                    <p className="callout-note">Una vez hecha la transferencia, necesitamos tus datos para emitir tu recibo deducible de impuestos.</p>
+                    
+                    {/* El botón redirige a la página de Contacto/Formulario */}
+                    <a 
+                        href="#contacto" 
+                        onClick={(e) => { e.preventDefault(); navigate('contacto'); }}
+                        className="submit-button large-button"
+                        aria-label="Ir al formulario de registro de donativos"
+                    >
+                        Ir al Formulario de Registro
+                    </a>
+                </div>
+            </section>
+        </main>
+    );
+};
+
+const LegalPage = () => {
+    return (
+        <main role="main" className="page-view legal-page-container" tabIndex="-1">
+            <section className="contact-section" aria-labelledby="legal-heading">
+                <h2 id="legal-heading" className="section-heading">Aviso Legal y Políticas de Accesibilidad</h2>
+                <div className="legal-content">
+                    {/* Renderiza el texto legal con saltos de línea */}
+                    {mockApiResponse.legal_text.split('\n').map((line, index) => (
+                        <p key={index}>{line}</p>
+                    ))}
+                </div>
+                
+                <h3 className="sub-heading">Política de Privacidad</h3>
+                <p>Nuestra política es no compartir datos. La información de contacto y donativos se mantiene bajo estricta confidencialidad, cumpliendo con la legislación vigente de protección de datos personales.</p>
+            </section>
+        </main>
+    );
+};
+
+// --- Componente Principal (App Router) ---
 function App() {
-    const { news, services } = mockApiResponse;
+    const [currentPage, setCurrentPage] = useState('inicio');
+
+    const navigate = (page) => {
+        setCurrentPage(page);
+        // Asegura que al cambiar de vista, el foco se mueva al contenido principal (WCAG 2.4.3 Focus Order)
+        setTimeout(() => {
+            const mainContent = document.querySelector('main[role="main"]');
+            if (mainContent) {
+                // Hacemos el contenido principal enfocable y movemos el foco
+                mainContent.focus(); 
+            }
+        }, 0);
+    };
+
+    const renderPage = () => {
+        switch (currentPage) {
+            case 'servicios':
+                return <ServicesPage />;
+            case 'contacto':
+                return <AccessibleContactForm />;
+            case 'donar':
+                return <DonationPage navigate={navigate} />;
+            case 'legal':
+                return <LegalPage />;
+            case 'inicio':
+            default:
+                return <HomePage navigate={navigate} />;
+        }
+    };
     
     return (
         <div className="page-wrapper">
+            {/* Header y Navegación (Compartidos en todas las páginas) */}
             <header className="site-header">
                 <h1 className="header-title">Inclusión con Equidad A.C.</h1>
                 
                 <nav role="navigation" aria-label="Navegación principal del sitio">
-                    <a href="#inicio" className="nav-link">Inicio</a>
-                    <a href="#servicios" className="nav-link">Servicios</a>
-                    <a href="#noticias" className="nav-link">Noticias</a>
-                    <a href="#contacto" className="nav-link">Contacto</a> {/* Nuevo enlace */}
-                    <a href="#donar" className="nav-link">Donar</a>
+                    <a href="#inicio" className="nav-link" onClick={(e) => { e.preventDefault(); navigate('inicio'); }}>Inicio</a>
+                    <a href="#servicios" className="nav-link" onClick={(e) => { e.preventDefault(); navigate('servicios'); }}>Servicios</a>
+                    <a href="#contacto" className="nav-link" onClick={(e) => { e.preventDefault(); navigate('contacto'); }}>Contacto</a>
+                    <a href="#donar" className="nav-link" onClick={(e) => { e.preventDefault(); navigate('donar'); }}>Donar</a>
                 </nav>
             </header>
             
-            <main role="main" className="main-content-grid">
-                
-                <section className="posts-grid" id="noticias" aria-label="Lista de publicaciones recientes">
-                    <h2 className="section-heading">Últimas Noticias</h2>
-                    {news.map(post => (
-                        <AccessiblePostCard key={post.id} post={post} />
-                    ))}
-                </section>
-                
-                {/* Contenido complementario */}
-                <DonationCallout /> 
-                
-            </main>
+            {/* Renderizado de la Página Actual */}
+            {renderPage()}
             
-            {/* Nueva sección de contacto */}
-            <AccessibleContactForm />
-
-            <ServicesSection services={services} /> 
-            
+            {/* Footer (Compartido en todas las páginas) */}
             <footer className="site-footer" role="contentinfo">
                 <p>&copy; 2025 Inclusión con Equidad A.C. | Todos los derechos reservados.</p>
-                <a href="#aviso-legal" className="footer-link">Aviso Legal</a>
+                {/* El enlace Legal cambia el estado */}
+                <a 
+                    href="#aviso-legal" 
+                    className="footer-link"
+                    onClick={(e) => { e.preventDefault(); navigate('legal'); }}
+                >
+                    Aviso Legal
+                </a>
             </footer>
         </div>
     );
