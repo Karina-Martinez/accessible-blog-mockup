@@ -315,6 +315,56 @@ a:focus,
     box-shadow: 0 0 10px rgba(255, 170, 0, 0.8);
 }
 
+/* --- Footer Mejorado (NUEVOS ESTILOS) --- */
+.site-footer {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    padding: 30px 20px; /* Aumenta el relleno */
+    text-align: left; /* Alineación a la izquierda por defecto */
+    font-size: 0.9rem;
+
+    /* LAYOUT: Distribución en 3 columnas/secciones */
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Permite que las columnas caigan en móvil */
+    gap: 20px;
+}
+
+.footer-section {
+    flex: 1; /* Distribuye el espacio entre secciones */
+    min-width: 200px; /* Evita que se compriman demasiado */
+}
+
+.footer-section-title {
+    color: #ffcc00; /* Título en amarillo para alto contraste */
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 5px;
+}
+
+.footer-link {
+    color: #ffcc00;
+    text-decoration: none;
+    display: block; /* Muestra los enlaces en bloques para facilitar el toque */
+    margin-bottom: 5px;
+}
+
+.footer-link:hover {
+    color: #ffffff; /* Contraste al pasar el mouse */
+}
+
+.footer-copyright {
+    margin-top: 15px;
+    font-size: 0.8rem;
+    color: #999;
+    text-align: center;
+    width: 100%; /* Asegura que la línea de copyright ocupe todo el ancho */
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 10px;
+}
+
+
 /* --- Adaptación para móviles --- */
 @media (max-width: 768px) {
     .main-content-grid {
@@ -341,5 +391,19 @@ a:focus,
 
     .contact-section {
         margin: 20px 0;
+    }
+
+    /* En móvil, las secciones del footer se apilan */
+    .site-footer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .footer-section {
+        min-width: 100%;
+        margin-bottom: 15px;
+    }
+    .footer-section-title {
+        text-align: center;
     }
 }
