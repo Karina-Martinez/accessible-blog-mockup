@@ -6,7 +6,10 @@ import { mockApiResponse, mockApiFormSubmit } from './data';
 const AccessibleLogo = () => (
     <div className="site-logo">
         <img 
-            src="/images/logo.png"
+            // 🔑 SOLUCIÓN PARA GITHUB PAGES: 
+            // Usamos process.env.PUBLIC_URL para garantizar que la ruta sea relativa al directorio del repositorio.
+            // Ejemplo de ruta generada: /nombre-del-repo/images/logo.png
+            src={process.env.PUBLIC_URL + "/images/logo.png"} 
             alt="Logo de Inclusión con Equidad A.C., simbolizando la inclusión digital."
             className="logo-image"
         />
