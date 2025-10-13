@@ -6,7 +6,7 @@ import { mockApiResponse, mockApiFormSubmit } from './data';
 const AccessibleLogo = () => (
     <div className="site-logo">
         <img 
-            src="/public/images/logo.png"
+            src="/images/logo.png"
             alt="Logo de Inclusión con Equidad A.C., simbolizando la inclusión digital."
             className="logo-image"
         />
