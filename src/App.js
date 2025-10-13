@@ -2,6 +2,17 @@ import React, { useState } from 'react';
 import './App.css'; 
 import { mockApiResponse, mockApiFormSubmit } from './data'; 
 
+// --- Componente: Logo Accesible (Actualizado con imagen) ---
+const AccessibleLogo = () => (
+    <div className="site-logo">
+        <img 
+            src="/public/logo.png"
+            alt="Logo de Inclusión con Equidad A.C., simbolizando la inclusión digital."
+            className="logo-image"
+        />
+    </div>
+);
+
 // --- Componente 1: Tarjeta de Noticia Accesible ---
 const AccessiblePostCard = ({ post }) => {
     // Uso de <article> y encabezados semánticos (<h2>)
@@ -167,12 +178,12 @@ const AccessibleContactForm = () => {
 
 // --- VISTAS DE PÁGINA COMPLETAS ---
 
-const HomePage = ({ navigate }) => {
+const BlogPage = ({ navigate }) => { 
     const { news } = mockApiResponse;
     return (
         <main role="main" className="main-content-grid" tabIndex="-1">
-            <section className="posts-grid" id="noticias" aria-label="Lista de publicaciones recientes">
-                <h2 className="section-heading">Últimas Noticias</h2>
+            <section className="posts-grid" id="blog" aria-label="Lista de publicaciones recientes">
+                <h2 className="section-heading">Blog: Inclusión y Tecnología</h2>
                 {news.map(post => (
                     <AccessiblePostCard key={post.id} post={post} />
                 ))}
@@ -227,7 +238,6 @@ const DonationPage = ({ navigate }) => {
 
                     <p className="callout-note">Una vez hecha la transferencia, necesitamos tus datos para emitir tu recibo deducible de impuestos.</p>
                     
-                    {/* El botón redirige a la página de Contacto/Formulario */}
                     <a 
                         href="#contacto" 
                         onClick={(e) => { e.preventDefault(); navigate('contacto'); }}
@@ -248,7 +258,7 @@ const LegalPage = () => {
             <section className="contact-section" aria-labelledby="legal-heading">
                 <h2 id="legal-heading" className="section-heading">Aviso Legal y Políticas de Accesibilidad</h2>
                 <div className="legal-content">
-                    {/* Renderiza el texto legal con saltos de línea */}
+                    {/* El texto legal se divide en párrafos para renderizado accesible */}
                     {mockApiResponse.legal_text.split('\n').map((line, index) => (
                         <p key={index}>{line}</p>
                     ))}
@@ -263,15 +273,14 @@ const LegalPage = () => {
 
 // --- Componente Principal (App Router) ---
 function App() {
-    const [currentPage, setCurrentPage] = useState('inicio');
+    const [currentPage, setCurrentPage] = useState('blog');
 
     const navigate = (page) => {
         setCurrentPage(page);
-        // Asegura que al cambiar de vista, el foco se mueva al contenido principal (WCAG 2.4.3 Focus Order)
+        // WCAG 2.4.3 Focus Order: Mueve el foco al contenido principal al cambiar de vista
         setTimeout(() => {
             const mainContent = document.querySelector('main[role="main"]');
             if (mainContent) {
-                // Hacemos el contenido principal enfocable y movemos el foco
                 mainContent.focus(); 
             }
         }, 0);
@@ -287,9 +296,10 @@ function App() {
                 return <DonationPage navigate={navigate} />;
             case 'legal':
                 return <LegalPage />;
-            case 'inicio':
+            case 'blog':
             default:
-                return <HomePage navigate={navigate} />;
+                // Ahora la vista por defecto es el blog
+                return <BlogPage navigate={navigate} />; 
         }
     };
     
@@ -297,10 +307,11 @@ function App() {
         <div className="page-wrapper">
             {/* Header y Navegación (Compartidos en todas las páginas) */}
             <header className="site-header">
-                <h1 className="header-title">Inclusión con Equidad A.C.</h1>
+                {/* Se reemplaza <h1> por el Componente Logo */}
+                <AccessibleLogo />
                 
                 <nav role="navigation" aria-label="Navegación principal del sitio">
-                    <a href="#inicio" className="nav-link" onClick={(e) => { e.preventDefault(); navigate('inicio'); }}>Inicio</a>
+                    <a href="#blog" className="nav-link" onClick={(e) => { e.preventDefault(); navigate('blog'); }}>Blog</a>
                     <a href="#servicios" className="nav-link" onClick={(e) => { e.preventDefault(); navigate('servicios'); }}>Servicios</a>
                     <a href="#contacto" className="nav-link" onClick={(e) => { e.preventDefault(); navigate('contacto'); }}>Contacto</a>
                     <a href="#donar" className="nav-link" onClick={(e) => { e.preventDefault(); navigate('donar'); }}>Donar</a>
@@ -310,17 +321,34 @@ function App() {
             {/* Renderizado de la Página Actual */}
             {renderPage()}
             
-            {/* Footer (Compartido en todas las páginas) */}
+            {/* Footer Mejorado */}
             <footer className="site-footer" role="contentinfo">
-                <p>&copy; 2025 Inclusión con Equidad A.C. | Todos los derechos reservados.</p>
-                {/* El enlace Legal cambia el estado */}
-                <a 
-                    href="#aviso-legal" 
-                    className="footer-link"
-                    onClick={(e) => { e.preventDefault(); navigate('legal'); }}
-                >
-                    Aviso Legal
-                </a>
+                <div className="footer-section">
+                    <h4 className="footer-section-title">Contáctanos</h4>
+                    <p>Email: <a href="mailto:contacto@inclu-equidad.org" className="footer-link">contacto@inclu-equidad.org</a></p>
+                    <p>Tel: (55) 5555-1234</p>
+                </div>
+
+                <div className="footer-section">
+                    <h4 className="footer-section-title">Navegación</h4>
+                    <a href="#blog" className="footer-link" onClick={(e) => { e.preventDefault(); navigate('blog'); }}>Blog</a>
+                    <a href="#servicios" className="footer-link" onClick={(e) => { e.preventDefault(); navigate('servicios'); }}>Servicios</a>
+                    <a href="#contacto" className="footer-link" onClick={(e) => { e.preventDefault(); navigate('contacto'); }}>Contacto</a>
+                </div>
+
+                <div className="footer-section">
+                    <h4 className="footer-section-title">Legal</h4>
+                    <a 
+                        href="#aviso-legal" 
+                        className="footer-link"
+                        onClick={(e) => { e.preventDefault(); navigate('legal'); }}
+                    >
+                        Aviso Legal
+                    </a>
+                    <a href="#privacidad" className="footer-link" onClick={(e) => { e.preventDefault(); navigate('legal'); }}>Política de Privacidad</a>
+                </div>
+
+                <p className="footer-copyright">&copy; 2025 Inclusión con Equidad A.C. | Sitio desarrollado bajo WCAG 2.1.</p>
             </footer>
         </div>
     );

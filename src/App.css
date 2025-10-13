@@ -12,9 +12,9 @@ body {
   color: #1a1a1a; /* Texto oscuro para alto contraste */
 }
 
-/* --- Header y Navegación --- */
+/* --- Header y Navegación (Ajuste de Colores) --- */
 .site-header {
-  background-color: #004d99; /* Azul oscuro fuerte */
+  background-color: #1a535c; /* Nuevo: Verde/Azul Marino (Fuerte) */
   color: white;
   padding: 15px 20px;
   display: flex;
@@ -23,10 +23,26 @@ body {
   flex-wrap: wrap;
 }
 
+.site-logo {
+    /* Contenedor del logo */
+    display: flex;
+    align-items: center;
+    max-height: 50px; /* Limitamos la altura del contenedor principal */
+}
+
+.logo-image {
+    /* Dimensiones solicitadas (260x300), pero ajustadas a la altura del header para que no rompa el layout */
+    width: auto;
+    height: 50px; /* Altura ajustada para el header */
+    object-fit: contain;
+}
+
+
 .header-title {
+    /* Propiedad descontinuada, mantenida por si acaso */
     margin: 0;
     font-size: 1.8rem;
-    color: #ffcc00; /* Amarillo brillante para logo/título (alto contraste) */
+    color: #ffe66d; 
 }
 
 .nav-link {
@@ -46,7 +62,7 @@ body {
 /* --- Estilos de Secciones y Layout --- */
 .section-heading {
     font-size: 2rem;
-    color: #0056b3;
+    color: #007bff; /* Azul primario más brillante */
     border-bottom: 2px solid #ccc;
     padding-bottom: 10px;
     margin-top: 30px;
@@ -80,7 +96,7 @@ body {
 }
 
 .post-title {
-  color: #0056b3; 
+  color: #1a535c; /* Color institucional oscuro */
 }
 
 .post-image-mockup {
@@ -110,7 +126,7 @@ body {
 }
 
 .callout-title {
-    color: #004d99; /* Azul oscuro para alto contraste */
+    color: #1a535c; /* Color institucional oscuro para alto contraste */
     font-size: 1.5rem;
     margin-top: 0;
 }
@@ -121,7 +137,7 @@ body {
     min-width: 80%; 
     text-align: center;
     padding: 12px;
-    background-color: #007bff;
+    background-color: #1a535c; /* Nuevo: Color institucional primario */
     color: white;
     text-decoration: none;
     border-radius: 6px;
@@ -131,7 +147,7 @@ body {
 }
 
 .donation-button:hover {
-    background-color: #0056b3;
+    background-color: #007bff;
 }
 
 /* --- Sección de Servicios (Expandida para la página) --- */
@@ -157,7 +173,7 @@ body {
 /* --- Estilos de Páginas (Donativos/Legal) --- */
 .sub-heading {
     font-size: 1.3rem;
-    color: #0056b3;
+    color: #1a535c;
     margin-top: 25px;
     border-bottom: 1px dashed #ccc;
     padding-bottom: 5px;
@@ -184,7 +200,6 @@ body {
     padding: 15px 30px;
 }
 .legal-content {
-    /* Ya que ahora el contenido legal es un array de párrafos, esto no es necesario: white-space: pre-wrap; */
     line-height: 1.6;
 }
 
@@ -206,7 +221,7 @@ body {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
-    color: #0056b3;
+    color: #1a535c; /* Color oscuro institucional */
 }
 
 .accessible-form input[type="text"],
@@ -228,7 +243,7 @@ body {
 }
 
 .input-error {
-    color: #cc0000; /* Rojo oscuro para contraste (WCAG 1.4.3) */
+    color: #cc0000; 
     font-size: 0.875rem;
     margin-top: 5px;
     font-weight: bold;
@@ -250,7 +265,7 @@ body {
 
 .submit-button {
     padding: 12px 25px;
-    background-color: #0056b3;
+    background-color: #1a535c; /* Color institucional */
     color: white;
     border: none;
     border-radius: 6px;
@@ -261,7 +276,7 @@ body {
 }
 
 .submit-button:hover:not(:disabled) {
-    background-color: #003d80;
+    background-color: #007bff;
 }
 
 .submit-button:disabled {
@@ -295,7 +310,7 @@ body {
 }
 
 .loading-message {
-    color: #0056b3;
+    color: #1a535c;
     font-style: italic;
     text-align: center;
     margin-bottom: 10px;
@@ -315,28 +330,28 @@ a:focus,
     box-shadow: 0 0 10px rgba(255, 170, 0, 0.8);
 }
 
-/* --- Footer Mejorado (NUEVOS ESTILOS) --- */
+/* --- Footer Mejorado --- */
 .site-footer {
     background-color: #1a1a1a;
     color: #e0e0e0;
-    padding: 30px 20px; /* Aumenta el relleno */
-    text-align: left; /* Alineación a la izquierda por defecto */
+    padding: 30px 20px; 
+    text-align: left; 
     font-size: 0.9rem;
 
     /* LAYOUT: Distribución en 3 columnas/secciones */
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap; /* Permite que las columnas caigan en móvil */
+    flex-wrap: wrap; 
     gap: 20px;
 }
 
 .footer-section {
-    flex: 1; /* Distribuye el espacio entre secciones */
-    min-width: 200px; /* Evita que se compriman demasiado */
+    flex: 1; 
+    min-width: 200px; 
 }
 
 .footer-section-title {
-    color: #ffcc00; /* Título en amarillo para alto contraste */
+    color: #ffe66d; /* Color amarillo del logo */
     font-size: 1.1rem;
     margin-bottom: 10px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -344,14 +359,14 @@ a:focus,
 }
 
 .footer-link {
-    color: #ffcc00;
+    color: #ffe66d;
     text-decoration: none;
-    display: block; /* Muestra los enlaces en bloques para facilitar el toque */
+    display: block; 
     margin-bottom: 5px;
 }
 
 .footer-link:hover {
-    color: #ffffff; /* Contraste al pasar el mouse */
+    color: #ffffff; 
 }
 
 .footer-copyright {
@@ -359,7 +374,7 @@ a:focus,
     font-size: 0.8rem;
     color: #999;
     text-align: center;
-    width: 100%; /* Asegura que la línea de copyright ocupe todo el ancho */
+    width: 100%; 
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding-top: 10px;
 }
@@ -374,7 +389,16 @@ a:focus,
 
     .site-header {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center; /* Centramos logo y nav en móvil */
+    }
+    
+    .site-logo {
+        /* Permite que el logo ocupe más espacio arriba del menú */
+        max-height: 100px; 
+    }
+    .logo-image {
+        /* Permite que el logo se vea más grande en móvil */
+        height: 70px;
     }
 
     nav {
